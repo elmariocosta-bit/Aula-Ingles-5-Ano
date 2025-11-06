@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Time Activities – Interactive Lesson</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', sans-serif;
+    background-color: #f5fbff;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 { color: #0077b6; }
+  h2 { color: #023e8a; }
+  .intro {
+    background: #caf0f8;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 25px;
+  }
+  .activity {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 950px;
+  }
+  .choices {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .hobby-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .portuguese-name {
+    font-weight: bold;
+    color: #023e8a;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    object-fit: cover;
+  }
+  select {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  button {
+    background-color: #0077b6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover { background-color: #023e8a; }
+  .correct { color: green; font-weight: bold; }
+  .incorrect { color: red; font-weight: bold; }
+  .translate { color: #666; font-style: italic; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>🎨 Free Time Activities – Interactive Lesson 🎶</h1>
+
+<div class="intro">
+  <p><b>Topic:</b> Hobbies and Free Time Activities</p>
+  <p><i>Tema:</i> Passatempos e atividades do tempo livre</p>
+  <p>Let's learn how to talk about what we like to do in our free time! <br>
+  <i>Vamos aprender a falar sobre o que gostamos de fazer no nosso tempo livre!</i></p>
+</div>
+
+<!-- ACTIVITY 1 -->
+<div class="activity">
+  <h2>🎯 Activity 1 – Match the Picture with the Hobby</h2>
+  <p><i>Associe cada imagem ao nome correto em inglês.</i></p>
+  <div class="choices" id="activity1"></div>
+</div>
+
+<!-- ACTIVITY 2 -->
+<div class="activity">
+  <h2>✏️ Activity 2 – Choose the correct hobby to complete the sentence</h2>
+  <p><i>Escolha o passatempo correto para completar a frase.</i></p>
+  <div id="activity2"></div>
+</div>
+
+<!-- ACTIVITY 3 -->
+<div class="activity">
+  <h2>✅ Activity 3 – True or False?</h2>
+  <p><i>Marque se a frase é verdadeira ou falsa.</i></p>
+  <div id="activity3"></div>
+</div>
+
+<button onclick="checkAnswers()">Check Answers ✅</button>
+<p id="result"></p>
+
+<script>
+// ---------- ACTIVITY 1 ----------
+const hobbies = [
+  ["Ouvir música", "Listening to music", "https://cdn-icons-png.flaticon.com/512/727/727241.png", ["Listening to music", "Drawing", "Running"]],
+  ["Ler livros", "Reading books", "https://cdn-icons-png.flaticon.com/512/2702/2702134.png", ["Reading books", "Cooking", "Cycling"]],
+  ["Cozinhar", "Cooking", "https://cdn-icons-png.flaticon.com/512/3082/3082027.png", ["Cooking", "Gardening", "Painting"]],
+  ["Dançar", "Dancing", "https://cdn-icons-png.flaticon.com/512/3079/3079035.png", ["Dancing", "Singing", "Drawing"]],
+  ["Jogar futebol", "Playing football", "https://cdn-icons-png.flaticon.com/512/2936/2936636.png", ["Playing football", "Swimming", "Running"]],
+  ["Nadar", "Swimming", "https://cdn-icons-png.flaticon.com/512/2936/2936680.png", ["Swimming", "Cycling", "Drawing"]],
+  ["Jogar videogame", "Playing video games", "https://cdn-icons-png.flaticon.com/512/2936/2936676.png", ["Playing video games", "Reading", "Cooking"]],
+  ["Tirar fotos", "Taking pictures", "https://cdn-icons-png.flaticon.com/512/2936/2936655.png", ["Taking pictures", "Painting", "Running"]],
+  ["Pedalar", "Cycling", "https://cdn-icons-png.flaticon.com/512/2936/2936645.png", ["Cycling", "Swimming", "Drawing"]],
+  ["Correr", "Running", "https://cdn-icons-png.flaticon.com/512/2936/2936665.png", ["Running", "Playing football", "Singing"]],
+  ["Assistir TV", "Watching TV", "https://cdn-icons-png.flaticon.com/512/2936/2936672.png", ["Watching TV", "Painting", "Gardening"]],
+  ["Pintar", "Painting", "https://cdn-icons-png.flaticon.com/512/2936/2936649.png", ["Painting", "Reading", "Cycling"]],
+  ["Jardinagem", "Gardening", "https://cdn-icons-png.flaticon.com/512/2936/2936650.png", ["Gardening", "Cooking", "Running"]],
+  ["Cantar", "Singing", "https://cdn-icons-png.flaticon.com/512/727/727245.png", ["Singing", "Dancing", "Playing football"]],
+  ["Jogar xadrez", "Playing chess", "https://cdn-icons-png.flaticon.com/512/2936/2936657.png", ["Playing chess", "Running", "Swimming"]]
+];
+
+let html1 = "";
+hobbies.forEach((hobby, i) => {
+  html1 += `
+    <div class="hobby-item">
+      <div class="portuguese-name">${hobby[0]}</div>
+      <img src="${hobby[2]}" alt="${hobby[1]}"><br>
+      <select id="q${i+1}">
+        <option value="">-- Choose --</option>
+        ${hobby[3].map(op => `<option value="${op.toLowerCase()}">${op}</option>`).join('')}
+      </select>
+    </div>`;
+});
+document.getElementById("activity1").innerHTML = html1;
+
+// ---------- ACTIVITY 2 ----------
+const sentences = [
+  ["I love _______ songs in my room. 🎧", "listening to music", "Eu adoro ouvir músicas no meu quarto."],
+  ["Mary enjoys _______ new recipes. 🍰", "cooking", "Mary gosta de cozinhar novas receitas."],
+  ["We like _______ after school. ⚽", "playing football", "Nós gostamos de jogar futebol depois da escola."],
+  ["Tom enjoys _______ around the park. 🚴", "cycling", "Tom gosta de pedalar pelo parque."],
+  ["My sister loves _______ photos of nature. 📸", "taking pictures", "Minha irmã adora tirar fotos da natureza."],
+  ["They like _______ together at parties. 💃", "dancing", "Eles gostam de dançar juntos nas festas."],
+  ["I usually go _______ in the morning. 🏃", "running", "Eu geralmente saio para correr de manhã."],
+  ["My father loves _______ the newspaper. 📚", "reading books", "Meu pai adora ler o jornal."],
+  ["We enjoy _______ TV at night. 📺", "watching tv", "Gostamos de assistir TV à noite."],
+  ["Lucy likes _______ in her garden. 🌻", "gardening", "Lucy gosta de cuidar do jardim."]
+];
+
+let html2 = "";
+sentences.forEach((s, i) => {
+  html2 += `<p>${i+1}. ${s[0]}<br><span class="translate">${s[2]}</span><br>
+  <select id="a${i+1}">
+    <option value="">-- Choose --</option>
+    <option value="${s[1]}">${s[1]}</option>
+    <option value="drawing">drawing</option>
+    <option value="painting">painting</option>
+  </select></p>`;
+});
+document.getElementById("activity2").innerHTML = html2;
+
+// ---------- ACTIVITY 3 ----------
+const trueFalse = [
+  ["People can swim in a swimming pool.", "true", "As pessoas podem nadar em uma piscina."],
+  ["We use a ball to play football.", "true", "Usamos uma bola para jogar futebol."],
+  ["People paint pictures when they are cycling.", "false", "As pessoas pintam quadros quando estão pedalando."],
+  ["You can listen to music with headphones.", "true", "Você pode ouvir música com fones de ouvido."],
+  ["Cooking is the same as running.", "false", "Cozinhar é o mesmo que correr."],
+  ["Reading books improves vocabulary.", "true", "Ler livros melhora o vocabulário."],
+  ["You can dance while listening to music.", "true", "Você pode dançar enquanto ouve música."],
+  ["Gardening is done inside the house.", "false", "Jardinagem é feita dentro de casa."],
+  ["People take pictures with a camera.", "true", "As pessoas tiram fotos com uma câmera."],
+  ["Playing chess requires a football.", "false", "Jogar xadrez requer uma bola de futebol."]
+];
+
+let html3 = "";
+trueFalse.forEach((q, i) => {
+  html3 += `<p>${i+1}. ${q[0]}<br><span class="translate">${q[2]}</span><br>
+  <select id="t${i+1}">
+    <option value="">-- Choose --</option>
+    <option value="true">True</option>
+    <option value="false">False</option>
+  </select></p>`;
+});
+document.getElementById("activity3").innerHTML = html3;
+
+// ---------- CHECK ANSWERS ----------
+function checkAnswers() {
+  let score = 0;
+  let total = hobbies.length + sentences.length + trueFalse.length;
+
+  // Activity 1 - Corrigido para usar a posição correta
+  hobbies.forEach((h, i) => {
+    const el = document.getElementById(`q${i+1}`);
+    if (el.value.toLowerCase() === h[1].toLowerCase()) {
+      el.style.border = "2px solid green";
+      score++;
+    } else el.style.border = "2px solid red";
+  });
+
+  // Activity 2
+  sentences.forEach((s, i) => {
+    const el = document.getElementById(`a${i+1}`);
+    if (el.value.toLowerCase() === s[1]) {
+      el.style.border = "2px solid green";
+      score++;
+    } else el.style.border = "2px solid red";
+  });
+
+  // Activity 3
+  trueFalse.forEach((q, i) => {
+    const el = document.getElementById(`t${i+1}`);
+    if (el.value === q[1]) {
+      el.style.border = "2px solid green";
+      score++;
+    } else el.style.border = "2px solid red";
+  });
+
+  const percent = Math.round((score / total) * 100);
+  document.getElementById("result").innerHTML =
+    `<br><b>You got ${score} of ${total} correct (${percent}%).</b><br>` +
+    (percent >= 80 ? "<span class='correct'>Excellent! 🌟</span>" :
+     percent >= 50 ? "<span class='correct'>Good job! 👍 Keep practicing!</span>" :
+     "<span class='incorrect'>Try again! 💪</span>");
+}
+</script>
+
+</body>
+</html>
